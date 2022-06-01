@@ -5,11 +5,11 @@ class App {
   // ...
 
   constructor() {
-    // ...
+    this.app = express();
     this.config();
     // ...
   }
-// First commit
+
   private config():void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
@@ -24,7 +24,7 @@ class App {
 
   // ...
   public start(PORT: string | number):void {
-    // ...
+    this.app.listen(PORT);
   }
 }
 
