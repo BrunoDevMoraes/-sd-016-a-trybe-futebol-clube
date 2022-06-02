@@ -8,7 +8,6 @@ class App {
     this.app = express();
     this.app.use(express.json());
     this.config();
-    this.routesSelector();
   }
 
   private config():void {
@@ -25,11 +24,7 @@ class App {
 
   public start(PORT: string | number):void {
     this.app.listen(PORT);
-  }
-
-  private routesSelector() :void {
-    const login = new LoginRouter();
-    this.app.use('/login', login.router);
+    this.app.use(LoginRouter);
   }
 }
 

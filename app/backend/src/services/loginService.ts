@@ -1,24 +1,23 @@
-import * as jwt from 'jsonwebtoken';
+import * as Bcrypt from 'bcryptjs';
 import Users from '../database/models/Users';
+import Token from '../utils/Token';
 
 export default class LoginService {
-  private info = { email: 'string', password: 'string' };
-
-  async postLogin(info: { email: 'string', password: 'string' }) {
-    this.info = info;
+  static async postLogin(info: { email: 'string', password: 'string' }) {
     const user = await Users.findOne({ where: { email: info.email } });
     if (user === null) {
-      return 'Invalid email or password';
+      return false;
     }
-    const status = user.password === info.password;
+    const status = Bcrypt.compareSync(info.password, user.password);
     if (status === false) {
-      return 'Invalid email or password';
+      return false;
     }
     const { id, email, role, username } = user;
     const payload = { id, email, role, username };
+    const token = Token.create(payload);
     return {
       user: { id, username, role, email },
-      token: jwt.sign(payload, 'super_senha', { algorithm: 'HS256' }),
+      token,
     };
   }
 }
