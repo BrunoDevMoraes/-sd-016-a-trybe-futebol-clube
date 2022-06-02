@@ -22,7 +22,7 @@ services:
     ports:
       - 3001:3001
     platform: linux/x86_64
-    restart_always: true
+    # restart_always: true
     # ...
     depends_on:
       db:

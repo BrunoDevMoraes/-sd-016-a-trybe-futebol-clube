@@ -1,4 +1,5 @@
 import * as express from 'express';
+import LoginRouter from './routes/loginRoute';
 
 class App {
   public app: express.Express;
@@ -6,7 +7,9 @@ class App {
 
   constructor() {
     this.app = express();
+    this.app.use(express.json());
     this.config();
+    this.routesSelector();
     // ...
   }
 
@@ -25,6 +28,11 @@ class App {
   // ...
   public start(PORT: string | number):void {
     this.app.listen(PORT);
+  }
+
+  private routesSelector() :void {
+    const login = new LoginRouter();
+    this.app.use('/login', login.router);
   }
 }
 
