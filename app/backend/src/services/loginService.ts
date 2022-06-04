@@ -20,4 +20,11 @@ export default class LoginService {
       token,
     };
   }
+
+  static async validator(authorization: string) {
+    if (typeof authorization === 'string') {
+      const payload = Token.decode(authorization);
+      return payload;
+    }
+  }
 }

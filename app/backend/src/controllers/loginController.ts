@@ -13,4 +13,18 @@ export default class LoginController {
       return res.status(500).json({ message: (err as Error).message });
     }
   }
+
+  static async validator(req: Request, res: Response) {
+    try {
+      const info = req.headers;
+      if (info.authorization !== undefined) {
+        const payload = await LoginService.validator(info.authorization);
+        if (typeof payload === 'object') {
+          return res.status(200).json(payload.role);
+        }
+      }
+    } catch (err) {
+      return res.status(500).json({ message: (err as Error).message });
+    }
+  }
 }
