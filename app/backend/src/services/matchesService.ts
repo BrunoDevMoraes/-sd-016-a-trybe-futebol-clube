@@ -19,4 +19,22 @@ export default class MatchesService {
     });
     return matches;
   }
+
+  static async createMatch(matchInfo: {
+    homeTeam: number,
+    awayTeam: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+    inProgress: boolean,
+  }) {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = matchInfo;
+    const match = await Matches.create({
+      homeTeam,
+      homeTeamGoals,
+      awayTeam,
+      awayTeamGoals,
+      inProgress,
+    });
+    return match;
+  }
 }
