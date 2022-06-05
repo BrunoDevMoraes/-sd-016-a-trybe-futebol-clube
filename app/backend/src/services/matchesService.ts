@@ -37,4 +37,9 @@ export default class MatchesService {
     });
     return match;
   }
+
+  static async changeMatchStatus(id: string) {
+    await Matches.update({ inProgress: false }, { where: { id } });
+    return { message: 'Finished' };
+  }
 }

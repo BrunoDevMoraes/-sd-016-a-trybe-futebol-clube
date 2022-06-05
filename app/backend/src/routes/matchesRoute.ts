@@ -8,4 +8,6 @@ router.get('/matches', MatchesController.getAll);
 
 router.post('/matches', CheckAuth.jwtValidator, MatchesController.createMatch);
 
+router.patch('/matches/:id/finish', MatchesController.changeMatchStatus);
+
 export default router;
