@@ -38,4 +38,16 @@ export default class MatchesController {
       return res.status(500).json({ message: (err as Error).message });
     }
   }
+
+  static async updateGoals(req: Request, res: Response) {
+    try {
+      const payload = req.params;
+      const goals = req.body;
+      const { id } = payload;
+      const status = await MatchesService.updateGoals(id, goals);
+      return res.status(200).json(status);
+    } catch (err) {
+      return res.status(500).json({ message: (err as Error).message });
+    }
+  }
 }

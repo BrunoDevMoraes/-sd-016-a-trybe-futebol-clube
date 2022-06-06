@@ -38,4 +38,10 @@ export default class MatchesService {
     await Matches.update({ inProgress: false }, { where: { id } });
     return { message: 'Finished' };
   }
+
+  static async updateGoals(id: string, goals: { homeTeamGoals: number, awayTeamGoals: number }) {
+    const { homeTeamGoals, awayTeamGoals } = goals;
+    await Matches.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    return { message: 'Match update' };
+  }
 }
