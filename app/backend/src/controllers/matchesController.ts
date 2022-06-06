@@ -15,6 +15,13 @@ export default class MatchesController {
     try {
       const matchInfo = req.body;
       const match = await MatchesService.createMatch(matchInfo);
+      if (match === false) {
+        return res.status(401)
+          .json({ message: 'It is not possible to create a match with two equal teams' });
+      }
+      if (typeof match === 'number') {
+        return res.status(404).json({ message: 'There is no team with such id!' });
+      }
       return res.status(201).json(match);
     } catch (err) {
       return res.status(500).json({ message: (err as Error).message });
