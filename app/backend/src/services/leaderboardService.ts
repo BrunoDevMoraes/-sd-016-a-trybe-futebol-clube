@@ -12,14 +12,21 @@ export default class LeaderboardService {
     const finishedMatches = await Matches.findAll({ where: { inProgress: false } });
     const teams = await Teams.findAll();
     const allTeamsInfo = teams.map((team: ITeam) => {
-      const filtered = Leaderboard.filterByHomeTeamId(finishedMatches, team.id);
+      const filtered = Leaderboard.filterByTeamId(finishedMatches, team.id, 'home');
       const teamInfo = Leaderboard.getHomeTeamInfo(filtered);
       return { name: team.teamName, ...teamInfo };
     });
-    allTeamsInfo.sort((a, b) => b.totalPoints - a.totalPoints
-    || b.goalsBalance - a.goalsBalance
-    || b.goalsFavor - a.goalsFavor
-    || a.goalsOwn - b.goalsOwn);
-    return allTeamsInfo;
+    return Leaderboard.sortArray(allTeamsInfo);
+  }
+
+  static async getAwayMatches() {
+    const finishedMatches = await Matches.findAll({ where: { inProgress: false } });
+    const teams = await Teams.findAll();
+    const allTeamsInfo = teams.map((team: ITeam) => {
+      const filtered = Leaderboard.filterByTeamId(finishedMatches, team.id, 'away');
+      const teamInfo = Leaderboard.getAwayTeamInfo(filtered);
+      return { name: team.teamName, ...teamInfo };
+    });
+    return Leaderboard.sortArray(allTeamsInfo);
   }
 }

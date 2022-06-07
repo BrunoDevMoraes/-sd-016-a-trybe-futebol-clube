@@ -10,4 +10,13 @@ export default class leaderboardController {
       return res.status(500).json({ message: (err as Error).message });
     }
   }
+
+  static async getAwayMatches(_req: Request, res: Response) {
+    try {
+      const leaderboardAway = await LeaderboardService.getAwayMatches();
+      return res.status(200).json(leaderboardAway);
+    } catch (err) {
+      return res.status(500).json({ message: (err as Error).message });
+    }
+  }
 }
