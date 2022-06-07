@@ -8,7 +8,6 @@ interface IMatch {
 }
 
 interface ITeamInfo {
-  name: string,
   totalPoints: number,
   totalGames: number,
   totalVictories: number,
@@ -18,6 +17,10 @@ interface ITeamInfo {
   goalsOwn: number,
   goalsBalance: number,
   efficiency: number
+}
+
+interface ITeamInfoWIthName extends ITeamInfo {
+  name: string,
 }
 
 export default class Leaderboard {
@@ -143,11 +146,28 @@ export default class Leaderboard {
       efficiency };
   }
 
-  static sortArray(arr: ITeamInfo[]) {
+  static sortArray(arr: ITeamInfoWIthName[]) {
     arr.sort((a, b) => b.totalPoints - a.totalPoints
     || b.goalsBalance - a.goalsBalance
     || b.goalsFavor - a.goalsFavor
     || a.goalsOwn - b.goalsOwn);
     return arr;
+  }
+
+  static joinHomeAway(objHome: ITeamInfo, objAway: ITeamInfo) {
+    const totalPoints = objHome.totalPoints + objAway.totalPoints;
+    const totalGames = objHome.totalGames + objAway.totalGames;
+    return {
+      totalPoints,
+      totalGames,
+      totalVictories: objHome.totalVictories + objAway.totalVictories,
+      totalDraws: objHome.totalDraws + objAway.totalDraws,
+      totalLosses: objHome.totalLosses + objAway.totalLosses,
+      goalsFavor: objHome.goalsFavor + objAway.goalsFavor,
+      goalsOwn: objHome.goalsOwn + objAway.goalsOwn,
+      goalsBalance: objHome.goalsBalance + objAway.goalsBalance,
+      efficiency: (Math
+        .round(((100 * (totalPoints / (totalGames * 3))) + Number.EPSILON) * 100) / 100),
+    };
   }
 }
