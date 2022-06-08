@@ -11,6 +11,7 @@ class App {
     this.app = express();
     this.app.use(express.json());
     this.config();
+    this.routes();
   }
 
   private config():void {
@@ -27,6 +28,9 @@ class App {
 
   public start(PORT: string | number):void {
     this.app.listen(PORT);
+  }
+
+  public routes(): void {
     this.app.use(LoginRouter);
     this.app.use(TeamsRouter);
     this.app.use(MatchesRouter);
